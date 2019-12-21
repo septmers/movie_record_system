@@ -8,10 +8,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "users")
+
+@NamedQueries({
+    @NamedQuery(
+            name = "checkRegisteredUser_name",   //登録済みのユーザ名との重複チェック用クエリ
+            query = "SELECT COUNT(u) FROM User AS u WHERE u.user_name = :user_name"
+            ),
+    @NamedQuery(
+            name = "checkLoginCodeAndPassword",
+            query = "SELECT u FROM User AS u WHERE u.user_name = :user_name AND u.password = :password"
+            ),
+    @NamedQuery(
+            name = "getUsers",
+            query = "SELECT u FROM User AS u WHERE u.id = :user_id"
+            )
+})
+
+
 public class User {
     @Id
     @Column(name = "id")
@@ -33,7 +53,7 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", nullable = false, unique = true)
     private String user_name;
 
     @Column(name = "passwoed", nullable = false)

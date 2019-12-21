@@ -14,23 +14,30 @@ import models.User;
 import utils.DBUtil;
 
 
-@WebServlet("/users/new")
-public class UsersNewServlet extends HttpServlet {
+@WebServlet("/users/edit")
+public class UsersEditServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
 
-    public UsersNewServlet() {
+    public UsersEditServlet() {
         super();
     }
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
-        request.setAttribute("user", new User());
+        User login_user = (User)request.getSession().getAttribute("login_user");
+        Integer user_id = login_user.getId();
+
+        User user = em.find(User.class, user_id);
+
+        request.setAttribute("user", user);
         request.setAttribute("_token", request.getSession().getId());
 
         em.close();
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
+
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/edit.jsp");
         rd.forward(request, response);
     }
 
