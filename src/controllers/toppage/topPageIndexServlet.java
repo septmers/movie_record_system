@@ -29,29 +29,35 @@ public class topPageIndexServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Integer genre = null;
-        Integer value = null;
-        Integer ages  = null;
-        //「0」･･･Under 10
-        //「1」･･･10代
+        Integer genre = 0;
+        Integer value = 0;
+        Integer ages  = 0;
+        //「0」･･･All
+        //「1」･･･Under 20
         //「2」･･･20代
         //「3」･･･30代
         //「4」･･･40代
         //「5」･･･50代
         //「6」･･･60代
         //「7」･･･Over 70
-        Integer sex = null;
+        Integer sex = 0;
         String keyword = null;
         try{
             genre = Integer.parseInt(request.getParameter("genre"));
             value = Integer.parseInt(request.getParameter("value"));
             ages = Integer.parseInt(request.getParameter("ages"));
             sex = Integer.parseInt(request.getParameter("sex"));
-            keyword = request.getParameter("keyword");
-        }catch(Exception e){}
+            keyword = request.getParameter("keywords");
+        }catch(NumberFormatException e){}
 
         recordDao dao = new recordDao();
         List<Record> records = new ArrayList<Record>();
+        //クエリーチェック
+        //genre = 2;
+        //value = 5;
+        //ages = 2;
+        //sex = 1;
+        //keyword ="ccc";
         try{
             records = dao.getRecordExtraction(genre, value, ages, sex, keyword);
         }catch(NullPointerException e){}
@@ -63,7 +69,7 @@ public class topPageIndexServlet extends HttpServlet {
             Record record = it.next();
             Integer user_id = record.getUser_id();
             User u = em.createNamedQuery("getUsers", User.class)
-                       .setParameter("id", user_id)
+                       .setParameter("user_id", user_id)
                        .getSingleResult();
             try{
                 record.setUser(u);
