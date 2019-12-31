@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -73,63 +72,70 @@ public class RecordsCreateServlet extends HttpServlet {
             r.setUser_age(user_age);
 
 
-            String keywords = request.getParameter("keyword");
-            Pattern pattern = Pattern.compile("^#\\w\\s$");
-            Matcher matcher = pattern.matcher(keywords);
+            String str = request.getParameter("keyword");
             List<String> tags = new ArrayList<String>();
-            while(matcher.find()){
-                tags.add(matcher.group());
-            }
+            try{
+                tags = Arrays.asList(str.split("#", -1));
+            }catch(NullPointerException e){}
+            System.out.println(str);
+            System.out.println(tags);
 
             List<String> errors = RecordValidator.validate(r);
             if(errors.size() >0){    //入力エラーがあった場合
-                request.setAttribute("newrecord", r);
-                request.setAttribute("tags", tags);
+                em.close();
+                request.setAttribute("record", r);
                 request.setAttribute("_token", request.getSession().getId());
                 request.setAttribute("errors", errors);
+                //request.setAttribute("tags", tags);
 
-                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/topPage/index.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/new.jsp");
                 rd.forward(request, response);
 
+
             }else{                  //入力エラーがなかった場合
-                Tag t = new Tag();
-                TagMap tm = new TagMap();
-                Iterator<String> it = tags.iterator();
-                while(it.hasNext()){
-                    String tag = it.next();
-                    Tag registered_tag = null;
-                    try{
-                        registered_tag = em.createNamedQuery("getRegisteredTag", Tag.class)
-                                            .setParameter("tag", tag)
-                                            .getSingleResult();
-                    }catch(NoResultException ex){}
+                em.getTransaction().begin();
+                em.persist(r);
+                em.getTransaction().commit();
 
-                    if(registered_tag == null){    //
-                        t.setTag(tag);
-                        t.setCreated_at(currentTime);
-                        tm.setRecord_id(r.getId());
-                        tm.setTag_id(t.getId());
-                        tm.setCreated_at(currentTime);
+                if(str != null){   //ハッシュタグ入力があった場合
+                    Iterator<String> it = tags.iterator();
+                    while(it.hasNext()){
+                        String tag = it.next();
+                        Integer registered_tag_id = null;
+                        try{
+                            registered_tag_id = em.createNamedQuery("getRegisteredTag_id", Integer.class)
+                                                  .setParameter("tag", tag)
+                                                  .getSingleResult();
+                        }catch(NoResultException ex){}
 
-                        em.getTransaction().begin();
-                        em.persist(t);
-                        em.persist(tm);
-                        em.getTransaction().commit();
-                    }else{
-                        tm.setRecord_id(r.getId());
-                        tm.setTag_id(t.getId());
-                        tm.setCreated_at(currentTime);
-
-                        em.getTransaction().begin();
-                        em.persist(tm);
-                        em.getTransaction().commit();
+                        if(registered_tag_id != null){  //既存のタグがある場合、tagMapテーブルに新規登録
+                            TagMap tm = new TagMap();
+                            tm.setRecord_id(r.getId());
+                            tm.setTag_id(registered_tag_id);
+                            tm.setCreated_at(currentTime);
+                            em.getTransaction().begin();
+                            em.persist(tm);
+                            em.getTransaction().commit();
+                        }else{                        //既存のタグがない場合、tagテーブルおよびtagMapテーブルに新規登録
+                            Tag t = new Tag();
+                            TagMap tm = new TagMap();
+                            t.setTag(tag);
+                            t.setCreated_at(currentTime);
+                            em.getTransaction().begin();
+                            em.persist(t);
+                            em.getTransaction().commit();
+                            tm.setRecord_id(r.getId());
+                            tm.setTag_id(t.getId());
+                            tm.setCreated_at(currentTime);
+                            em.getTransaction().begin();
+                            em.persist(tm);
+                            em.getTransaction().commit();
+                        }
                     }
-            }
-            em.getTransaction().begin();
-            em.persist(r);
-            em.getTransaction().commit();
-            em.close();
+                }
 
+            em.close();
+            request.getSession().setAttribute("flush", "Created new record!");
             response.sendRedirect(request.getContextPath() + "/");
             }
         }
