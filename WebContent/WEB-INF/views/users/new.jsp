@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
+    <div class = "wrapper">
         <h2>Create New Account</h2>
 
             <form method="POST" action="<c:url value='/users/create' />">
@@ -9,5 +10,6 @@
             </form>
 
             <p><a href="<c:url value='/login' />">back</a></p>
+    </div>
     </c:param>
 </c:import>
