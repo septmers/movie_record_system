@@ -3,17 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
+        <div class = "wrapper">
         <c:if test="${flush != null}">
             <div id= "flush_success">
                 <c:out value = "${flush}"/>
             </div>
         </c:if>
-        <h2>Movies Records</h2>
-
+        <div id = "search">
         <form method = "GET" action = "<c:url value = '/' />">
 
         <label for = "genre">Genre</label>
         <select name = "genre">
+        <option value="0"<c:if test="${genre == 0}"> selected</c:if> >All</option>
         <option value="1"<c:if test="${genre == 1}"> selected</c:if> >Anime</option>
         <option value="2"<c:if test="${genre == 2}"> selected</c:if> >Love Romance</option>
         <option value="3"<c:if test="${genre == 3}"> selected</c:if> >Horror</option>
@@ -28,6 +29,7 @@
 
         <label for = "value">Value</label>
         <select name = "value">
+        <option value="0"<c:if test="${value == 0}"> selected</c:if> >All</option>
         <option value="1"<c:if test="${value == 1}"> selected</c:if> >★☆☆☆☆</option>
         <option value="2"<c:if test="${value == 2}"> selected</c:if> >★★☆☆☆</option>
         <option value="3"<c:if test="${value == 3}"> selected</c:if> >★★★☆☆</option>
@@ -37,7 +39,8 @@
 
         <label for = "ages">Ages</label>
         <select name = "ages">
-        <option value="1" <c:if test="${ages == 1}"> selected</c:if> >Under 10</option>
+        <option value="0" <c:if test="${ages == 0}"> selected</c:if> >All</option>
+        <option value="1" <c:if test="${ages == 1}"> selected</c:if> >Under 20</option>
         <option value="2" <c:if test="${ages == 2}"> selected</c:if> >20's</option>
         <option value="3" <c:if test="${ages == 3}"> selected</c:if> >30's</option>
         <option value="4" <c:if test="${ages == 4}"> selected</c:if> >40's</option>
@@ -48,40 +51,42 @@
 
         <label for = "sex">Sex</label>
         <select name = "sex">
-        <option value="0" <c:if test="${sex == 0}"> selected</c:if> >Male</option>
-        <option value="1" <c:if test="${sex == 1}"> selected</c:if> >Female</option>
-        <option value="2" <c:if test="${sex == 2}"> selected</c:if> >Others</option>
+        <option value="0" <c:if test="${sex == 0}"> selected</c:if> >All</option>
+        <option value="1" <c:if test="${sex == 1}"> selected</c:if> >Male</option>
+        <option value="2" <c:if test="${sex == 2}"> selected</c:if> >Female</option>
+        <option value="3" <c:if test="${sex == 3}"> selected</c:if> >Others</option>
         </select>
 
         <label for = "keywords">Keywords</label>
-        <input type ="text" name="keywords" value="${keyword}" />
+        <input type ="text" name="keywords" value = "${keyword}"/>
 
-        <button type="submit">search</button>
+        <input type = "submit" class="button" value ="search">
         </form>
+        </div>
+
 
         <table id = "record_list">
             <tbody>
                 <tr>
-                    <th class = "record_user">User</th>
+                    <th class = "record_user">UserName</th>
                     <th class = "record_age">Age</th>
                     <th class = "record_sex">Sex</th>
                     <th class = "record_title">Title</th>
                     <th class = "record_genre">Genre</th>
                     <th class = "record_value">Value</th>
-                    <th class = "record_impression">Impression</th>
-                    <th class = "record_date">record date</th>
+                    <th class = "record_view">View</th>
                 </tr>
                 <tr>
                     <c:forEach var = "record" items = "${records}" varStatus = "status">
                         <tr class ="row${status.count % 2}">
-                            <td class = "record_user"><c:out value = "${record.user}" /></td>
+                            <td class = "record_user"><c:out value = "${record.user.user_name}" /></td>
                             <td class = "record_age"><c:out value = "${record.user_age}" /></td>
                             <td class = "record_sex">
                                 <c:choose>
-                                    <c:when test = "${record.user.sex == 0}">
+                                    <c:when test = "${record.user.sex == 1}">
                                         <p>Male</p>
                                     </c:when>
-                                    <c:when test = "${record.user.sex == 1}">
+                                    <c:when test = "${record.user.sex == 2}">
                                         <p>Female</p>
                                     </c:when>
                                     <c:otherwise>
@@ -143,19 +148,12 @@
                                     </c:otherwise>
                                 </c:choose>
                             </td>
-                            <td><a href = "<c:url value = '/records/show?id=${record.id}' />">view</a></td>
-                            <td><fmt:formatDate value = "${record.created_at}" pattern = "yyyy-MM-dd hh:MM:ss" /></td>
+                            <td><a class= "button" href = "<c:url value = '/records/show?id=${record.id}' />">view</a></td>
                         </tr>
                     </c:forEach>
                 </tr>
             </tbody>
         </table>
-
-
-        <h2>Register New Record</h2>
-            <form method="POST" action="<c:url value='/records/create' />">
-                <c:import url="_form.jsp" />
-            </form>
-
+        </div>
     </c:param>
 </c:import>
