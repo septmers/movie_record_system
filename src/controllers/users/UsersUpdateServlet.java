@@ -62,14 +62,13 @@ public class UsersUpdateServlet extends HttpServlet {
 
             String name = request.getParameter("name");
             u.setName(name);
-            Date birthday = (Date.valueOf(request.getParameter("birthday")));
-            u.setBirthday(birthday);
+            String birthday = request.getParameter("birthday");
             Integer sex = Integer.parseInt(request.getParameter("sex"));
             u.setSex(sex);
             Timestamp currentTime= new Timestamp(System.currentTimeMillis());
             u.setUpdated_at(currentTime);
 
-            List<String> errors = UserValidator.validate(u, user_name_duplicate_check_flag, password_chack_flag);
+            List<String> errors = UserValidator.validate(u, user_name_duplicate_check_flag, password_chack_flag, birthday);
             if(errors.size() > 0){
                 em.close();
                 request.setAttribute("user", u);
@@ -79,6 +78,7 @@ public class UsersUpdateServlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/edit.jsp");
                 rd.forward(request, response);
             }else{
+                u.setBirthday(Date.valueOf(request.getParameter("birthday")));
                 em.getTransaction().begin();
                 em.getTransaction().commit();
                 em.close();
