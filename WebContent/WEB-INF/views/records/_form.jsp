@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:if test= "${errors != null}">
     <div id = "flush_error">
-        入力内容にエラーがあります。<br />
+        **There are ERRORS ! **<br />
         <c:forEach var = "error" items = "${errors}">
             <c:out value = "${error}" /><br />
         </c:forEach>
@@ -37,14 +37,23 @@
         </select><br /><br />
 
 <label for = "impression">Impression</label><br />
-<input type ="text" name="impression" value="${record.impression}" /><br /><br />
+<textarea name = "impression" rows = "10" cols = "50">${record.impression}</textarea><br />
 
 <label for = "mylife">MyLife</label><br />
-<input type ="text" name="mylife" value="${record.mylife}" /><br /><br />
+<textarea name = "mylife" rows = "10" cols = "50">${record.mylife}</textarea><br />
 
 <label for = "keyword">Keywords</label><br />
-<input type ="text" name="keyword" value="${record.keyword}" /><br /><br />
+<textarea name="keyword" rows = "10" cols = "50">
+    <c:choose>
+        <c:when test="${tags != null}">
+            <c:forEach var = "tag" items = "${tags}">#${tag.tag}</c:forEach>
+        </c:when>
+        <c:otherwise>
+            #keyword
+        </c:otherwise>
+    </c:choose>
+</textarea><br />
 
 
 <input type ="hidden"  name="_token"  value="${_token}" />
-<button type="submit">Register</button>
+<input type = "submit" class="button" value ="create">
