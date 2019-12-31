@@ -12,7 +12,7 @@ import utils.DBUtil;
 
 public class UserValidator {
 
-    public static List<String> validate(User u, Boolean user_name_duplicate_check_flag, Boolean password_chack_flag){
+    public static List<String> validate(User u, Boolean user_name_duplicate_check_flag, Boolean password_chack_flag, String birthday){
         List<String> errors = new ArrayList<String>();
 
         String user_name_error = _validateUser_name(u.getUser_name(), user_name_duplicate_check_flag);
@@ -30,7 +30,7 @@ public class UserValidator {
             errors.add(password_error);
         }
 
-        String birthday_error = _validateBirthday(u.getBirthday());
+        String birthday_error = _validateBirthday(birthday);
         if(!birthday_error.equals("")){
             errors.add(birthday_error);
         }
@@ -81,14 +81,15 @@ public class UserValidator {
     }
 
     //生年月日の必須入力チェック
-    private static String _validateBirthday(Date birthday){
+    private static String _validateBirthday(String birthday){
         if(birthday == null || birthday.equals("")){
             return "生年月日を入力してください。";
         }
-
+        try{
+            Date.valueOf(birthday);
+        } catch(IllegalArgumentException e) {
+            return "生年月日を正しい形式で入力してください。";
+        }
         return "";
     }
-
-
-
 }
