@@ -1,0 +1,158 @@
+@CHARSET "UTF-8";
+
+/*共通部分
+  ------------------------------*/
+body {
+    color: white;
+    font-family: 'Courier Prime', monospace;
+    line-height: 1.7;
+    font-size: 20px;
+    background-color: #888888;
+}
+
+a{
+    text-decoration: none;
+    color: #1760a0;
+}
+a:hover{
+    color: #dddddd;
+}
+.button{
+    background: #82aaaa;
+    color:white;
+    border-radius: 5px;
+    padding: 5px 10px;
+
+}
+.button:hover{
+    background: #b3d0d7;
+}
+
+#footer{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 4%;
+    font-size: 15px;
+    height: 50px;
+    padding-top: 50px;
+    text-align: center;
+}
+h2{
+    font-size: 30px;
+}
+
+
+/* HEADER
+-------------------------------*/
+.main-nav{
+    display: flex;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-top: 34px;
+    margin-bottom: 34px;
+    list-style: none;
+}
+
+.page-header{
+    display: flex;
+    justify-content: space-between;
+}
+.page-header h1{
+    font-size: 30px;
+    margin-top: 34px;
+    margin-bottom: 34px;
+}
+
+.wrapper{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+
+/*  入力フォーム
+----------------------------------*/
+select,
+input[type="text"],
+input[type="password"],
+input[type="date"],
+textarea{
+    background: rgba(255,255,255,.5);
+    border: 1px #fff solid;
+    border-radius: 5px;
+    padding: 10ox;
+    font-size: 1rem;
+}
+input[type="submit"]{
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+#search{
+    font-size: 15px;
+    margin-bottom: 34px;
+}
+
+/*その他
+------------------------------------*/
+#content{
+    background-color: #888888;
+}
+.control{
+    display: flex;
+    margin-top: 5px;
+}
+
+/*フラッシュメッセージ
+------------------------------------*/
+#flush_success {
+    width: 100%;
+    padding-top: 28px;
+    padding-left: 2%;
+    padding-bottom: 28px;
+    margin-bottom: 15px;
+    color: #82aaaa;
+    background-color: #dddddd;
+}
+
+#flush_error {
+    width: 100%;
+    padding-top: 28px;
+    padding-left: 2%;
+    padding-bottom: 28px;
+    margin-bottom: 15px;
+    color: #721c24;
+    background-color: #f8d7da;
+}
+
+/*テーブル
+----------------------------*/
+table, tr, th, td{
+    border: 1px dotted #cccccc;
+}
+table{
+    width:100%;
+    table-layout:fixed;
+}
+th{
+    padding: 10px 2%;
+    text-align: center;
+    color: #b3d0d7;
+}
+th.record_age{
+    width: 6%;
+}
+th.record_sex{
+    width: 12%;
+}
+th.record_view{
+    width: 10%;
+}
+th.record_value{
+    width: 13%;
+}
+td{
+    width: 66%;
+    padding: 10px 2%;
+}
