@@ -9,7 +9,7 @@
         </c:forEach>
     </div>
 </c:if>
-<label for = "user_name">User name</label><br />
+<label for = "user_name">User name  ※This will be public!</label><br />
 <input type ="text" name="user_name" value="${user.user_name}" />
 <br /><br />
 <label for = "password">password</label><br />
@@ -23,11 +23,11 @@
 <br /><br />
 <label for = "sex">Sex</label><br />
 <select name = "sex">
-    <option value="0"<c:if test="${user.sex == 0}"> selected</c:if>>Male</option>
-    <option value="1"<c:if test="${user.sex == 1}"> selected</c:if> >Female</option>
-    <option value="2"<c:if test="${user.sex == 2}"> selected</c:if> >Others</option>
+    <option value="1"<c:if test="${user.sex == 1}"> selected</c:if>>Male</option>
+    <option value="2"<c:if test="${user.sex == 2}"> selected</c:if> >Female</option>
+    <option value="3"<c:if test="${user.sex == 3}"> selected</c:if> >Others</option>
 </select>
 <br /><br />
 
 <input type ="hidden"  name="_token"  value="${_token}" />
-<button type="submit">create</button>
+<input type = "submit" class="button" value ="create">
