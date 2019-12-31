@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:import url="../layout/app.jsp">
     <c:param name ="content">
+    <div class = "wrapper">
         <c:if test="${flush != null}">
             <div id="flush_success">
                 <c:out value = "${flush}"></c:out>
@@ -28,28 +29,29 @@
                             <th>Sex</th>
                             <td>
                                 <c:choose>
-                                    <c:when test="${user.sex == 0}">Male</c:when>
-                                    <c:when test="${user.sex == 1}">Female</c:when>
+                                    <c:when test="${user.sex == 1}">Male</c:when>
+                                    <c:when test="${user.sex == 2}">Female</c:when>
                                     <c:otherwise>Others</c:otherwise>
                                 </c:choose>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
-                <p><a href="<c:url value = '/users/edit'/>">Edit</a></p>
-                <p><a href="#" onclick="confirmDestroy();">Delete</a></p>
-                <form method="POST" action="<c:url value='/users/destroy'/>">
-                    <input type="hidden" name="_token" value="${_token}"/>
-                </form>
-                <script>
+                <div class="control">
+                    <p><a class="button" href="<c:url value = '/users/edit'/>">Edit</a>&nbsp;</p>
+                    <form name = "form" method="POST" action="<c:url value='/users/destroy'/>">
+                        <input type="hidden" name="_token" value="${_token}"/>
+                        <input type = "submit" class="button" value ="delete" onclick="confirmDestroy()">
+                    </form>
+                    <script>
                     function confirmDestroy(){
-                        if(confirm("Are you sure to delete this account?")){
-                            document.forms[1].submit();
+                        if(confirm("Are you sure to delete your account？")){
+                            document.form.submit();
                         }
                     }
-                </script>
-
+                    </script>
+                </div>
         <P><a href="<c:url value='/'/>">back</a></P>
+    </div>
     </c:param>
 </c:import>
