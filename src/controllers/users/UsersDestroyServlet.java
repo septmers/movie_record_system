@@ -41,6 +41,7 @@ public class UsersDestroyServlet extends HttpServlet {
             em.close();
 
             request.setAttribute("flush", "Deleted your account!");
+            request.getSession().removeAttribute("login_user");
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
             rd.forward(request, response);
 
