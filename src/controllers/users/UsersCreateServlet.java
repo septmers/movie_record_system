@@ -34,7 +34,7 @@ public class UsersCreateServlet extends HttpServlet {
 
             User u = new User();
             u.setName(request.getParameter("name"));
-            u.setBirthday(Date.valueOf(request.getParameter("birthday")));
+            String birthday = request.getParameter("birthday");
             u.setSex(Integer.parseInt(request.getParameter("sex")));
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             u.setCreated_at(currentTime);
@@ -46,7 +46,7 @@ public class UsersCreateServlet extends HttpServlet {
             u.setPassword(EncryptUtil.getPasswordEncrypt(password,(String)this.getServletContext().getAttribute("salt")));
 
             //バリデーションを実行
-            List<String> errors = UserValidator.validate(u, true, true);
+            List<String> errors = UserValidator.validate(u, true, true, birthday);
             if(errors.size() > 0){
                 em.close();
 
@@ -58,6 +58,7 @@ public class UsersCreateServlet extends HttpServlet {
                 rd.forward(request, response);
 
             }else{
+                u.setBirthday(Date.valueOf(request.getParameter("birthday")));
                 em.getTransaction().begin();
                 em.persist(u);
                 em.getTransaction().commit();
