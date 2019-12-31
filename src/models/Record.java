@@ -18,11 +18,23 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllRecords",           //全ての映画記録を取得する
-            query = "SELECT r FROM Record AS r"
+            query = "SELECT r FROM Record AS r ORDER BY r.created_at DESC"
             ),
     @NamedQuery(
             name = "getAllMyRecords",         //ログインユーザの全ての映画記録を取得する
-            query = "SELECT r FROM Record AS r WHERE r.user_id = :user"
+            query = "SELECT r FROM Record AS r WHERE r.user_id = :user ORDER BY r.created_at DESC"
+            ),
+    @NamedQuery(
+            name = "getTaggedRecords",        //該当のタグが付けられた記録一覧を取得する
+            query = "SELECT r FROM Record AS r WHERE r.id IN (SELECT tm.record_id FROM TagMap AS tm WHERE tm.tag_id = :tag_id) ORDER BY r.created_at DESC"
+            ),
+    @NamedQuery(
+            name = "getTaggedRecordsCount",        //該当のタグが付けられた記録一覧を取得する
+            query = "SELECT COUNT(r) FROM Record AS r WHERE r.id IN (SELECT tm.record_id FROM TagMap AS tm WHERE tm.tag_id = :tag_id)"
+            ),
+    @NamedQuery(
+            name = "getMyRecords",
+            query = "SELECT r FROM Record AS r WHERE r.user_id = :user_id ORDER BY r.created_at DESC"
             )
 })
 
