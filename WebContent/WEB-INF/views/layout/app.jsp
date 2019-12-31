@@ -8,28 +8,32 @@
         <title>Movies Records</title>
         <link rel="stylesheet" href="<c:url value='/css/reset.css' />">
         <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
+        <link href="https://fonts.googleapis.com/css?family=Courier+Prime&display=swap" rel="stylesheet">
     </head>
     <body>
         <div id="wrapper">
-            <div id="header">
-                <div id="header_menu">
-                    <h1>Movies Records</h1>&nbsp;&nbsp;&nbsp;
-                </div>
-                <c:if test="${sessionScope.login_user != null}">
-                    <div id ="user_records">
-                        <a href="<c:url value='/movies/index' />">my movie records</a>&nbsp;
-                    </div>
-                    <div id="user_name">
-                        <a href="<c:url value='/users/show?id=${sessionScope.login_user.id}' />">${sessionScope.login_user.user_name}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="<c:url value='/logout' />">Logout</a>
-                    </div>
-                </c:if>
-            </div>
+            <header class="page-header wrapper">
+                <h1>Movies Records</h1>
+                <nav>
+                    <ul class = "main-nav">
+                       <c:if test="${sessionScope.login_user != null}">
+                           <a class = "button" href ="<c:url value = '/records/new' />">+Add Record</a>&nbsp;
+                           <a class = "button" href="<c:url value='/myrecords/index' />">My Records</a>&nbsp;
+                           <a class = "button" href="<c:url value='/users/show?id=${sessionScope.login_user.id}' />">${sessionScope.login_user.user_name}</a>&nbsp;
+                           <a class = "button" href="<c:url value='/logout' />">Logout</a>
+                       </c:if>
+                    </ul>
+               </nav>
+            </header>
             <div id="content">
                 ${param.content}
             </div>
             <div id="footer">
-                by Nanami Kojima.
+                by Nanami Kojima  &nbsp;
+                <c:if test="${sessionScope.login_user != null}">
+                    | &nbsp;&nbsp;
+                    <a href ="<c:url value = '/' />">TopPage</a>
+                </c:if>
             </div>
         </div>
     </body>
