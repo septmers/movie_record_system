@@ -34,108 +34,108 @@ public class recordDao {
             buf.append("  WHERE           ");
             buf.append("  delete_flag = 0 ");
 
-            if(genre != null){
+            if(genre != 0){
                 buf.append("  AND          ");
                 buf.append("  genre = ?    ");
             }
 
-            if(value != null){
+            if(value != 0){
                 buf.append("  AND value= ? ");
             }
 
-            if(ages != null){
+            if(ages != 0){
                 buf.append("  AND user_age BETWEEN ? AND ?");
             }
 
-            if(sex != null){
-                buf.append("  AND user_id IN");
-                buf.append("  ( SELECT id   ");
-                buf.append("  FROM user     ");
-                buf.append("  WHERE sex = ?)");
+            if(sex != 0){
+                buf.append("  AND user_id IN ");
+                buf.append("  ( SELECT id    ");
+                buf.append("  FROM users     ");
+                buf.append("  WHERE sex = ?) ");
             }
 
             if(keyword != null){
-                buf.append("  AND id IN (      ");
-                buf.append("  SELECT record_id ");
-                buf.append("  FROM tagMap      ");
-                buf.append("  WHERE tag_id IN( ");
-                buf.append("  SELECT id        ");
-                buf.append("  FROM tag         ");
-                buf.append("  WHERE tag = ? )) ");
+                buf.append("  AND id IN (         ");
+                buf.append("  SELECT record_id    ");
+                buf.append("  FROM tagtable       ");
+                buf.append("  WHERE tag_id IN (   ");
+                buf.append("  SELECT id           ");
+                buf.append("  FROM tag            ");
+                buf.append("  WHERE tag LIKE ?  ))");
             }
+
+            buf.append("  ORDER BY        ");
+            buf.append("  created_at      ");
+            buf.append("  DESC            ");
 
             pstmt = con.prepareStatement(buf.toString());
 
             //4, 5. Select文の実行と結果を格納／代入
             int parameterIndex = 1;
-            if(genre != null){
+            if(genre != 0){
                 pstmt.setInt(parameterIndex, genre);
-                parameterIndex = parameterIndex +1;
+                parameterIndex += 1;
             }
 
-            if(value != null){
+            if(value != 0){
                 pstmt.setInt(parameterIndex, value);
-                parameterIndex = parameterIndex +1;
+                parameterIndex += 1;
             }
 
-            if(ages != null){
-                if(ages == 0){
+            if(ages != 0){
+                if (ages == 1){
                     pstmt.setInt(parameterIndex, 0);
-                    parameterIndex = parameterIndex +1;
-                    pstmt.setInt(parameterIndex, 9);
-                    parameterIndex = parameterIndex +1;
-                }else if (ages == 1){
-                    pstmt.setInt(parameterIndex, 10);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 19);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
                 else if (ages == 2){
                     pstmt.setInt(parameterIndex, 20);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 29);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
                 else if (ages == 3){
                     pstmt.setInt(parameterIndex, 30);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 39);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
                 else if (ages == 4){
                     pstmt.setInt(parameterIndex, 40);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 49);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
                 else if (ages == 5){
                     pstmt.setInt(parameterIndex, 50);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 59);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
                 else if (ages == 6){
                     pstmt.setInt(parameterIndex, 60);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 69);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
                 else if (ages == 7){
                     pstmt.setInt(parameterIndex, 70);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                     pstmt.setInt(parameterIndex, 150);
-                    parameterIndex = parameterIndex +1;
+                    parameterIndex += 1;
                 }
             }
 
-            if(sex != null){
+            if(sex != 0){
                 pstmt.setInt(parameterIndex, sex);
-                parameterIndex = parameterIndex +1;
+                parameterIndex += 1;
             }
 
             if(keyword != null){
-                pstmt.setString(parameterIndex, keyword);
-                parameterIndex = parameterIndex +1;
+                pstmt.setString(parameterIndex, keyword + "%");
+                parameterIndex += 1;
+                System.out.println(keyword);
             }
 
 
@@ -181,7 +181,7 @@ public class recordDao {
 
         //2. DBと接続する
         con = DriverManager.getConnection(
-                "jdbc:mysql://localhost/kadaidb?useSSL=false",
+                "jdbc:mysql://localhost/movie_record_system?useSSL=false&useUnicode=true&characterEncoding=utf8",
                 "root",
                 "nana1004"
                 );
