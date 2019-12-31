@@ -14,8 +14,12 @@ import javax.persistence.Table;
 @Table(name = "tag")
 @NamedQueries({
     @NamedQuery(
-            name = "getRegisteredTag",
-            query = "SELECT t FROM Tag AS t WHERE t.tag = :tag"
+            name = "getRegisteredTag_id",
+            query = "SELECT t.id FROM Tag AS t WHERE t.tag = :tag"
+            ),
+    @NamedQuery(
+            name = "getTags",
+            query = "SELECT t FROM Tag AS t WHERE t.id IN(SELECT tm.tag_id FROM TagMap AS tm WHERE tm.record_id = :record_id)"
             )
 })
 
