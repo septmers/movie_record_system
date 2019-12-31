@@ -8,9 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "tagTable")
+@NamedQueries({
+    @NamedQuery(
+            name = "getTagMaps",//該当レコードのタグマップを取得する
+            query = "SELECT tm FROM TagMap AS tm WHERE tm.record_id = :record_id"
+            )
+})
+
 @Entity
 
 public class TagMap {
