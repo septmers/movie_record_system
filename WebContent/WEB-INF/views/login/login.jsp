@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url = "/WEB-INF/views/layout/app.jsp">
     <c:param name = "content">
+    <div class = "wrapper">
         <c:if test = "${hasError}">
             <div id="flush_error">
                 username or password has error!
@@ -12,20 +13,20 @@
                 <c:out value = "${flush}" />
             </div>
         </c:if>
-        <h2>ログイン</h2>
-        <form method="POST" action="<c:url value = '/login'/>">
-            <label for = "user_name">User Name</label><br />
-            <input type = "text" name = "user_name" value="${user_name}">
-            <br /><br />
-            <label for = "password">パスワード</label><br />
-            <input type = "password" name = "password">
-            <br /><br />
+            <form method="POST" action="<c:url value = '/login'/>">
+                <label for = "user_name">User Name</label><br />
+                <input type = "text" name = "user_name" value="${user_name}">
+                <br /><br />
+                <label for = "password">Password</label><br />
+                <input type = "password" name = "password">
+                <br /><br />
+                <input type="hidden" name="_token" value="${_token}">
+                <input type = "submit" class="button" value ="login">
+            </form>
 
-            <input type="hidden" name="_token" value="${_token}">
-            <button type="submit">Login</button>
-        </form>
-        <form method="GET" action="<c:url value = '/users/new' />">
-            <button type="submit">New Account</button>
-        </form>
+            <form method="GET" action="<c:url value = '/users/new' />">
+                <input type = "submit" class="button" value ="new account">
+            </form>
+    </div>
     </c:param>
 </c:import>
