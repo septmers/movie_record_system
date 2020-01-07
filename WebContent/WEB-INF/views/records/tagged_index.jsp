@@ -4,7 +4,7 @@
 <c:import url="../layout/app.jsp">
     <c:param name="content">
     <div class = "wrapper">
-        <h2>#${tag_name}：${record_count}件</h2>
+        <h2>#${tag_name}：${record_count}hit!</h2>
         <table id = "record_list">
             <tbody>
                 <tr>
@@ -102,7 +102,7 @@
                         <c:out value = "${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href = "<c:url value = '/?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
+                        <a href = "<c:url value = '/tagged/records/index?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

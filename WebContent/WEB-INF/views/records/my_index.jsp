@@ -5,7 +5,7 @@
     <c:param name="content">
     <div class = "wrapper">
         <h2>${sessionScope.login_user.name}'s Movie Records</h2>
-        <p>全${record_count}件</p>
+        <p>${record_count}records</p>
         <table id = "record_list">
             <tbody>
                 <tr>
@@ -103,7 +103,7 @@
                         <c:out value = "${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href = "<c:url value = '/?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
+                        <a href = "<c:url value = '/myrecords/index?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

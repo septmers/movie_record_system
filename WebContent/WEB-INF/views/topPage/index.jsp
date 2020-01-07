@@ -65,7 +65,7 @@
         </form>
         </div>
 
-        <p>${records_count}hits!</p>
+        <p>${records_count}hit!</p>
 
         <table id = "record_list">
             <tbody>
@@ -158,7 +158,7 @@
         </table>
 
         <div id="pagination">
-            <c:forEach var ="i" begin="1" end="${((hitrecords_count - 1) / 5) + 1}">
+            <c:forEach var ="i" begin="1" end="${((records_count - 1) / 5) + 1}">
                 <c:choose>
                     <c:when test = "${i == page}">
                         <c:out value = "${i}" />&nbsp;

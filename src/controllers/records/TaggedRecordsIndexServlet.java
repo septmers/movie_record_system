@@ -26,9 +26,19 @@ public class TaggedRecordsIndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
+        int page;
+        try{
+            page = Integer.parseInt(request.getParameter("page"));
+        }catch(Exception e){
+            page = 1;
+        }
+
         List <Record> records = em.createNamedQuery("getTaggedRecords", Record.class)
                                  .setParameter("tag_id", Integer.parseInt(request.getParameter("id")))
+                                 .setFirstResult(5 * (page-1))
+                                 .setMaxResults(5)
                                  .getResultList();
+
         long record_count = (long)em.createNamedQuery("getTaggedRecordsCount", Long.class)
                                       .setParameter("tag_id", Integer.parseInt(request.getParameter("id")))
                                       .getSingleResult();
@@ -36,6 +46,7 @@ public class TaggedRecordsIndexServlet extends HttpServlet {
         Tag tag = em.find(Tag.class, Integer.parseInt(request.getParameter("id")));
         String tag_name = tag.getTag();
 
+        request.setAttribute("page", page);
         request.setAttribute("records", records);
         request.setAttribute("tag_name", tag_name);
         request.setAttribute("record_count", record_count);
