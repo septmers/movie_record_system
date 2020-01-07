@@ -17,8 +17,8 @@ import javax.persistence.Table;
 
 @NamedQueries({
     @NamedQuery(
-            name = "getAllRecords",           //全ての映画記録を取得する
-            query = "SELECT r FROM Record AS r ORDER BY r.created_at DESC"
+            name = "getAllRecordsCount",           //全ての映画記録を取得する
+            query = "SELECT COUNT(r) FROM Record AS r"
             ),
     @NamedQuery(
             name = "getAllMyRecords",         //ログインユーザの全ての映画記録を取得する
@@ -35,6 +35,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getMyRecords",
             query = "SELECT r FROM Record AS r WHERE r.user_id = :user_id ORDER BY r.created_at DESC"
+            ),
+    @NamedQuery(
+            name = "getMyRecordsCount",
+            query = "SELECT COUNT(r) FROM Record AS r WHERE r.user_id = :user_id ORDER BY r.created_at DESC"
             )
 })
 

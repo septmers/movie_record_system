@@ -15,7 +15,6 @@
             </c:otherwise>
         </c:choose>
 
-        <p><a href = "<c:url value = '/' />">Back to Top</a></p>
         </div>
     </c:param>
 </c:import>

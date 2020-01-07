@@ -43,17 +43,8 @@
 <textarea name = "mylife" rows = "10" cols = "50">${record.mylife}</textarea><br />
 
 <label for = "keyword">Keywords</label><br />
-<textarea name="keyword" rows = "10" cols = "50">
-    <c:choose>
-        <c:when test="${tags != null}">
-            <c:forEach var = "tag" items = "${tags}">#${tag.tag}</c:forEach>
-        </c:when>
-        <c:otherwise>
-            #keyword
-        </c:otherwise>
-    </c:choose>
-</textarea><br />
-
+<textarea name="keyword" rows = "10" cols = "50">${tags}</textarea><br />
+Example:#love#japan#awesome<br />
 
 <input type ="hidden"  name="_token"  value="${_token}" />
 <input type = "submit" class="button" value ="create">

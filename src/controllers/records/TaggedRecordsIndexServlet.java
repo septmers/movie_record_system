@@ -29,7 +29,7 @@ public class TaggedRecordsIndexServlet extends HttpServlet {
         List <Record> records = em.createNamedQuery("getTaggedRecords", Record.class)
                                  .setParameter("tag_id", Integer.parseInt(request.getParameter("id")))
                                  .getResultList();
-        long records_count = (long)em.createNamedQuery("getTaggedRecordsCount", Long.class)
+        long record_count = (long)em.createNamedQuery("getTaggedRecordsCount", Long.class)
                                       .setParameter("tag_id", Integer.parseInt(request.getParameter("id")))
                                       .getSingleResult();
 
@@ -38,7 +38,7 @@ public class TaggedRecordsIndexServlet extends HttpServlet {
 
         request.setAttribute("records", records);
         request.setAttribute("tag_name", tag_name);
-        request.setAttribute("records_count", records_count);
+        request.setAttribute("record_count", record_count);
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/tagged_index.jsp");
         rd.forward(request, response);

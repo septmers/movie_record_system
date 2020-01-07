@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Record;
 import models.User;
 import utils.DBUtil;
+import utils.hit_recordDao;
 import utils.recordDao;
 
 
@@ -28,6 +29,14 @@ public class topPageIndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        int page;
+        try{
+            page = Integer.parseInt(request.getParameter("page"));
+        }catch(Exception e){
+            page = 1;
+        }
+
 
         Integer genre = 0;
         Integer value = 0;
@@ -59,7 +68,7 @@ public class topPageIndexServlet extends HttpServlet {
         //sex = 1;
         //keyword ="ccc";
         try{
-            records = dao.getRecordExtraction(genre, value, ages, sex, keyword);
+            records = dao.getRecordExtraction(genre, value, ages, sex, keyword, page);
         }catch(NullPointerException e){}
 
         EntityManager em = DBUtil.createEntityManager();
@@ -75,6 +84,17 @@ public class topPageIndexServlet extends HttpServlet {
                 record.setUser(u);
             }catch(NullPointerException e){}
         }
+
+
+        //抽出検索をしてヒットした数を取得する
+        hit_recordDao count_dao = new hit_recordDao();
+        List<Record> hitrecords = new ArrayList<Record>();
+        try{
+            hitrecords = count_dao.getRecordCount(genre, value, ages, sex, keyword);
+        }catch(NullPointerException e){}
+
+        Integer records_count = hitrecords.size();
+
         em.close();
 
         request.setAttribute("records", records);
@@ -84,6 +104,8 @@ public class topPageIndexServlet extends HttpServlet {
         request.setAttribute("sex", sex);
         request.setAttribute("keyword", keyword);
         request.setAttribute("_token", request.getSession().getId());
+        request.setAttribute("records_count", records_count);
+        request.setAttribute("page", page);
 
         if(request.getSession().getAttribute("flush") != null){
             request.setAttribute("flush", request.getSession().getAttribute("flush"));

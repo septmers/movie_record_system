@@ -48,7 +48,7 @@
                         </tr>
                         <tr>
                             <th>User Name</th>
-                            <td><c:out value = "${record.user.name}" /></td>
+                            <td><c:out value = "${record.user.user_name}" /></td>
                         </tr>
                         <tr>
                             <th>User Sex</th>
@@ -109,8 +109,6 @@
                     </c:if>
                     </div>
                 </div>
-
-        <p><a href = "<c:url value = '/' />">Back to Top</a></p>
     </div>
     </c:param>
 </c:import>

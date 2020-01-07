@@ -9,6 +9,7 @@
                 <c:out value = "${flush}"/>
             </div>
         </c:if>
+
         <div id = "search">
         <form method = "GET" action = "<c:url value = '/' />">
 
@@ -64,6 +65,7 @@
         </form>
         </div>
 
+        <p>${records_count}hits!</p>
 
         <table id = "record_list">
             <tbody>
@@ -154,6 +156,21 @@
                 </tr>
             </tbody>
         </table>
+
+        <div id="pagination">
+            <c:forEach var ="i" begin="1" end="${((hitrecords_count - 1) / 5) + 1}">
+                <c:choose>
+                    <c:when test = "${i == page}">
+                        <c:out value = "${i}" />&nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <a href = "<c:url value = '/?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
         </div>
+
+        </div>
+
     </c:param>
 </c:import>

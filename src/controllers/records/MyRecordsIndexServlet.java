@@ -33,7 +33,12 @@ public class MyRecordsIndexServlet extends HttpServlet {
                                   .setParameter("user_id", user_id)
                                   .getResultList();
 
+        Long record_count = em.createNamedQuery("getMyRecordsCount", Long.class)
+                                .setParameter("user_id", user_id)
+                                .getSingleResult();
+
         request.setAttribute("records", records);
+        request.setAttribute("record_count", record_count);
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/records/my_index.jsp");
         rd.forward(request, response);
     }

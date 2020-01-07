@@ -10,14 +10,14 @@ import java.util.List;
 
 import models.Record;
 
-public class recordDao {
+public class hit_recordDao {
 
-     //データベース接続と結果取得のための変数
+    //データベース接続と結果取得のための変数
     private Connection con;
     private PreparedStatement pstmt;
     private ResultSet rs;
 
-    public List<Record> getRecordExtraction(Integer genre, Integer value, Integer ages, Integer sex, String keyword, Integer page){
+    public List<Record> getRecordCount(Integer genre, Integer value, Integer ages, Integer sex, String keyword){
 
         List<Record> records = new ArrayList<Record>();
 
@@ -28,7 +28,7 @@ public class recordDao {
             //3. DBとやりとりする窓口（Statementオブジェクト）の作成
             StringBuffer buf = new StringBuffer();
             buf.append("  SELECT          ");
-            buf.append("  *               ");
+            buf.append("  id              ");
             buf.append("  FROM            ");
             buf.append("  record          ");
             buf.append("  WHERE           ");
@@ -67,8 +67,6 @@ public class recordDao {
             buf.append("  ORDER BY        ");
             buf.append("  created_at      ");
             buf.append("  DESC            ");
-            buf.append("  LIMIT 5         ");
-            buf.append("  OFFSET ?        ");
 
             pstmt = con.prepareStatement(buf.toString());
 
@@ -140,8 +138,6 @@ public class recordDao {
                 System.out.println(keyword);
             }
 
-            pstmt.setInt(parameterIndex, 5 * (page-1));
-
 
             rs = pstmt.executeQuery();
 
@@ -150,17 +146,6 @@ public class recordDao {
             //一件ずつRecordオブジェクトを生成して結果を詰める
                 Record dto = new Record();
                 dto.setId(rs.getInt("id"));
-                dto.setTitle(rs.getString("title"));
-                dto.setGenre(rs.getInt("genre"));
-                dto.setValue(rs.getInt("value"));
-                dto.setImpression(rs.getString("impression"));
-                dto.setMylife(rs.getString("mylife"));
-                dto.setCreated_at(rs.getTimestamp("created_at"));
-                dto.setUpdated_at(rs.getTimestamp("updated_at"));
-                dto.setUser_id(rs.getInt("user_id"));
-                dto.setUser_age(rs.getInt("user_age"));
-
-
                 //リストに追加
                 records.add(dto);
             }
@@ -217,4 +202,5 @@ public class recordDao {
             }
         }
     }
+
 }

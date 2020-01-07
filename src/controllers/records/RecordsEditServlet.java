@@ -1,6 +1,7 @@
 package controllers.records;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -32,6 +33,19 @@ public class RecordsEditServlet extends HttpServlet {
                             .setParameter("record_id", record.getId())
                             .getResultList();
 
+        //ハッシュタグを文字列として連結する
+        Iterator<Tag> it = tags.iterator();
+        StringBuffer buf = new StringBuffer();
+        while(it.hasNext()){
+            Tag tag = it.next();
+            if(tag.getTag().equals("")){
+                continue;
+            }
+            buf.append("#");
+            buf.append(tag.getTag());
+        }
+        String tag_collection = buf.toString();
+
         em.close();
 
         User login_user = (User)request.getSession().getAttribute("login_user");
@@ -39,7 +53,7 @@ public class RecordsEditServlet extends HttpServlet {
 
             request.setAttribute("_token", request.getSession().getId());
             request.setAttribute("record", record);
-            request.setAttribute("tags", tags);
+            request.setAttribute("tags", tag_collection);
             request.getSession().setAttribute("record_id", record.getId());
         }
 

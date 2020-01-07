@@ -51,7 +51,6 @@
                     }
                     </script>
                 </div>
-        <P><a href="<c:url value='/'/>">back</a></P>
     </div>
     </c:param>
 </c:import>

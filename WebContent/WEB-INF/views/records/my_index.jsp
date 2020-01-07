@@ -5,6 +5,7 @@
     <c:param name="content">
     <div class = "wrapper">
         <h2>${sessionScope.login_user.name}'s Movie Records</h2>
+        <p>全${record_count}件</p>
         <table id = "record_list">
             <tbody>
                 <tr>
@@ -94,6 +95,20 @@
                 </tr>
             </tbody>
         </table>
+
+        <div id="pagination">
+            <c:forEach var ="i" begin="1" end="${((record_count - 1) / 5) + 1}">
+                <c:choose>
+                    <c:when test = "${i == page}">
+                        <c:out value = "${i}" />&nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <a href = "<c:url value = '/?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </div>
+
     </div>
     </c:param>
 </c:import>

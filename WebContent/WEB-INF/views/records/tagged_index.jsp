@@ -4,7 +4,7 @@
 <c:import url="../layout/app.jsp">
     <c:param name="content">
     <div class = "wrapper">
-        <h2>#${tag_name}：${records_count}件</h2>
+        <h2>#${tag_name}：${record_count}件</h2>
         <table id = "record_list">
             <tbody>
                 <tr>
@@ -94,6 +94,20 @@
                 </tr>
             </tbody>
         </table>
+
+        <div id="pagination">
+            <c:forEach var ="i" begin="1" end="${((record_count - 1) / 5) + 1}">
+                <c:choose>
+                    <c:when test = "${i == page}">
+                        <c:out value = "${i}" />&nbsp;
+                    </c:when>
+                    <c:otherwise>
+                        <a href = "<c:url value = '/?page=${i}' />"><c:out value = "${i}" /></a>&nbsp;
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </div>
+
     </div>
     </c:param>
 </c:import>
